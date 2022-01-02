@@ -5,7 +5,7 @@ import yfinance as yf
 
 app = Flask(__name__)
 api = Api(app)
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+CORS(app)
 
 class Data(Resource):
     def getEMA(self, last_100):
