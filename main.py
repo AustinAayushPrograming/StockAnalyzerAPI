@@ -1,11 +1,11 @@
 from flask import Flask
 from flask_restful import Api, Resource
+from flask_cors import CORS
 import yfinance as yf
-import pandas as pd
-import sys
 
 app = Flask(__name__)
 api = Api(app)
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 class Data(Resource):
     def getEMA(self, last_100):
@@ -362,7 +362,7 @@ class Data(Resource):
     def get(self, ticker):
         data = yf.download(ticker, group_by="ticker", period='100d')
         points = self.get_total_trend_points(data)
-        return {"data" : points}
+        return {"data": points}
 
 api.add_resource(Data, "/data/<string:ticker>")
 
