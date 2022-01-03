@@ -361,16 +361,23 @@ class Data(Resource):
     # Main get request function
     def get(self, ticker):
         data = yf.download(ticker, group_by="ticker", period='100d')
+        info = yf.Ticker(ticker).info
         points = self.get_total_trend_points(data)
         temp = data.to_dict('series')
         dictionary = temp['Close']
         resultPrice = []
         resultDate = []
+        resultInfo = []
+
+        for key in info.keys():
+            resultInfo.append([key,info[key]])
+
         for key in dictionary.keys():
             key = key.strftime("%d %B, %Y")
             resultDate.append(key[0:len(key) - 6])
             resultPrice.append(dictionary[key])
-        return {"data": points, "all": [resultDate, resultPrice]}
+
+        return {"trendPoints": points, "datePrice": [resultDate, resultPrice], "info": resultInfo}
 
 api.add_resource(Data, "/data/<string:ticker>")
 
