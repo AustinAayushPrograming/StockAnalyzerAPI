@@ -379,7 +379,20 @@ class Data(Resource):
 
         return {"trendPoints": points, "datePrice": [resultDate, resultPrice], "info": resultInfo}
 
+class Info(Resource):
+
+    # Main get request function
+    def get(self, ticker):
+        info = yf.Ticker(ticker).info
+        resultInfo = []
+
+        for key in info.keys():
+            resultInfo.append([key, info[key]])
+
+        return {"info": resultInfo}
+
 api.add_resource(Data, "/data/<string:ticker>")
+api.add_resource(Info, "/info/<string:ticker>")
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
