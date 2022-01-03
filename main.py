@@ -2,8 +2,6 @@ from flask import Flask
 from flask_restful import Api, Resource
 from flask_cors import CORS
 import yfinance as yf
-from datetime import datetime
-import pandas as pd
 
 app = Flask(__name__)
 api = Api(app)
@@ -366,11 +364,13 @@ class Data(Resource):
         points = self.get_total_trend_points(data)
         temp = data.to_dict('series')
         dictionary = temp['Close']
-        result = []
+        resultPrice = []
+        resultDate = []
         for key in dictionary.keys():
             key = key.strftime("%d %B, %Y")
-            result.append([key, dictionary[key]])
-        return {"data": points, "all": result}
+            resultDate.append(key[0:len(key) - 6])
+            resultPrice.append(dictionary[key])
+        return {"data": points, "all": [resultDate, resultPrice]}
 
 api.add_resource(Data, "/data/<string:ticker>")
 
