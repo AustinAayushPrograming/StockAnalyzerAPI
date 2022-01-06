@@ -35,7 +35,7 @@ class Index(Resource):
         result=[]
 
         for date in data.index:
-            dateString = date.strftime("%d %B, %Y")
+            dateString = date.strftime("%d %b, %Y")
             labels.append(dateString)
 
         for i in range(len(data)):
