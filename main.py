@@ -18,7 +18,7 @@ class Data(Resource):
 
         for i in range(len(data)):
             row = data.iloc[i]
-            result[i].append([round(row['Open'], 2),round(row['High'], 2),round(row['Low'], 2),round(row['Close'], 2)])
+            result[i].extend([round(row['Open'], 2),round(row['High'], 2),round(row['Low'], 2),round(row['Close'], 2)])
 
         return {"data": result}
 
