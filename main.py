@@ -2,7 +2,6 @@ from flask import Flask
 from flask_restful import Api, Resource
 from flask_cors import CORS
 import yfinance as yf
-from datetime import datetime
 
 app = Flask(__name__)
 api = Api(app)
@@ -19,7 +18,7 @@ class Data(Resource):
 
         for i in range(len(data)):
             row = data.iloc[i]
-            result[i].append([row['Open'],row['High'],row['Low'],row['Close']])
+            result[i].append([round(row['Open'], 2),round(row['High'], 2),round(row['Low'], 2),round(row['Close'], 2)])
 
         return {"data": result}
 
