@@ -28,8 +28,25 @@ class Info(Resource):
         info = yf.Ticker(ticker).get_info()
         return {"name": info}
 
+class Index(Resource):
+    def get(self, ticker):
+        data = yf.download(ticker, group_by="ticker", period='100d')
+        labels=[]
+        result=[]
+
+        for date in data.index:
+            dateString = date.strftime("%d %B, %Y")
+            labels.append(dateString)
+
+        for i in range(len(data)):
+            row = data.iloc[i]['Close']
+            result.append(row)
+
+        return {"labels": labels, "data": result}
+
 api.add_resource(Data, "/data/<string:ticker>")
 api.add_resource(Info, "/info/<string:ticker>")
+api.add_resource(Index, "/index/<string:ticker>")
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
